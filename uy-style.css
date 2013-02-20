@@ -1,0 +1,26 @@
+#uslugi-yandex {
+	width: 578px;
+	border: 1px solid silver;
+	font-family: Tahoma;
+}
+
+#uy-form {
+	margin: 20px 10%;
+	width: 80%;
+}
+
+#uslugi-yandex table {
+	width: 100%;
+}
+
+.uy-select {
+	width: 210px;
+}
+
+.uy-select-mini {
+	width: 70px;
+}
+
+#uy-form-table td {
+	vertical-align: top;
+}

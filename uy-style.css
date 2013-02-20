@@ -7,6 +7,7 @@
 #uy-form {
 	margin: 20px 10%;
 	width: 80%;
+	display: none;
 }
 
 #uslugi-yandex table {
@@ -19,6 +20,10 @@
 
 .uy-select-mini {
 	width: 70px;
+}
+
+#uy-form-table td {
+	padding-top: 10px;
 }
 
 #uy-form-table td {

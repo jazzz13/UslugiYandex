@@ -1,5 +1,8 @@
 <?php 
+
+	include "./uy-fields-content.php";
 	
+
 	$formStructureCollection = array(
 		array(
 			"sum",
@@ -11,10 +14,15 @@
 			"advanced-repayment"
 			),
 		array(
-			"a",
-			"h"
+			"min-initial-instalment",
+			"dwelling",
+			"dwelling-readiness"
 			),
-		array(),
+		array(
+			"vendor-type",
+			"age-type",
+			"insurance"
+			),
 	);
 
 	$formCreditId = 0;
@@ -27,14 +35,17 @@
 	$selectedFields = $formStructureCollection[$formCreditId];
 
 	function getDescriptionByFieldName($fieldName){
-		return $fieldName." lol";
+		global $descriptions;
+		return $descriptions[ $fieldName ];
 	}
 
 	function getControlsByFildName($fieldName){
-		return "lol ".$fieldName;
+		global $controllers;
+		return $controllers[ $fieldName ];
 	}
 
 ?>
+
 
 <link rel='stylesheet' type='text/css' href='./uy-style.css'>
 <div id='uslugi-yandex'>

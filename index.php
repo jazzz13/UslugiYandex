@@ -1,3 +1,7 @@
+<a href='?formCreditId=0'>0</a>
+<a href='?formCreditId=1'>1</a>
+<a href='?formCreditId=2'>2</a>
+
 <?php 
 
 	include "./uy-fields-content.php";

@@ -30,17 +30,19 @@ if (!$fp) {
 	}
 	fclose($fp);
 
+	$responce = http_get_begin_xml($responce);
 	$responce = http_trim_headers($responce);
+	
+	echo $responce;
+}
 
-	$mass = split("\n\r", $responce);
-
-	echo "lol";
-
+function http_get_begin_xml($content) {
+	return substr($content, strpos($content, "<?xml"));
 }
 
 function http_trim_headers($content)
 {
-	return trim(substr( $content, strpos($content, "\r\n\r\n") ));
+	return trim(substr( $content, 0, strpos($content, "\r\n") ));
 }
 
 ?>

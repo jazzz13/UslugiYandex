@@ -2,11 +2,60 @@
 
 header('Content-Type: text/xml; charset=utf-8');
 
-function YaGet2($url) {
+$apiKey = "hbFWpwACAAABPPb6QEWsXrzh0X6HgHzi0zN7lZMXh8f7hA";
+
+$baseURLAPI = "http://api.uslugi.yandex.ru";
+
+$urlCommonCredits = "/1.0/banks/credits/search";
+$urlMortgages = "/1.0/banks/mortgages/search";
+$urlAutoCredits = "/1.0/banks/autocredits/search";
+
+
+$creditTypeId = 0;
+
+if(!isset($_GET["creditTypeId"])){
+	$creditTypeId = (int)$_GET["creditTypeId"];
+}
+
+$defaultParams = "";
+
+/*
+if(Empty($_GET["currency"])) {
+	$defaultParams .= "currency=RUB&";
+}
+if(Empty($_GET["region"])) {
+	$defaultParams .= "region=Москва&";
+}
+if(Empty($_GET["sum"])) {
+	$defaultParams .= "sum=10&";
+}
+if(Empty($_GET["period"])) {
+	$defaultParams .= "period=year&";
+}  
+*/
+
+$totalURL = $baseURLAPI;
+
+if($creditTypeId==1){
+	$totalURL .= $urlMortgages;
+} else if($creditTypeId==2){
+	$totalURL .= $urlAutoCredits;
+} else {
+	$totalURL .= $urlCommonCredits;
+}
+
+$totalURL .= "?key=".$apiKey."&".$_SERVER["QUERY_STRING"];
+
+$totalURL .= $defaultParams;
+
+print YaGet( $totalURL );
+
+function YaGet($url) {
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_REFERER , "http://" .$_SERVER['HTTP_HOST'] ); // http обязательно или сервер выдаст нам бу... 
+	curl_setopt($ch, CURLOPT_REFERER , "http://" .$_SERVER['HTTP_HOST'] );
+	curl_setopt($ch, CURLOPT_REFERER , "http://smartcredits.ru");
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array($url, 'GET'));
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -28,27 +77,5 @@ function YaGet2($url) {
 		return $return;
 	}
 }
-
-
-
-$yakey = "hbFWpwACAAABPPb6QEWsXrzh0X6HgHzi0zN7lZMXh8f7hA";
-
-$sum = !Empty($_GET['sum'])?  $_GET['sum']: 500000;
-$period= !Empty($_GET['period'])?  $_GET['period']  : "year";
-$currency = !empty($_GET['currency'])? $_GET['currency'] : "RUS";
-
-$url_uslugi = 'http://api.uslugi.yandex.ru/1.0/banks/credits/search?'
-	.http_build_query(
-		array(
-			'key'=>$yakey,
-			'region'=>'Оренбург',
-			'currency'=>$currency,
-			'period'=>$period ,
-			'sum'=>$sum
-		)
-	);
-
-
-print YaGet2( $url_uslugi );
 
 ?>

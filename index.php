@@ -80,6 +80,7 @@
 ?>
 
 		</table>
+		<button id='uy-request-button'>Показать кредиты</button>
 	</div>
 	<br>
 	

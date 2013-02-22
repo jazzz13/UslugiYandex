@@ -1,6 +1,9 @@
-<a href='?formCreditId=0'>0</a>
-<a href='?formCreditId=1'>1</a>
-<a href='?formCreditId=2'>2</a>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel='stylesheet' type='text/css' href='./uy-style.css'>
+
+<a href='?formCreditId=0'>обычный</a>
+<a href='?formCreditId=1'>ипотека</a>
+<a href='?formCreditId=2'>авто</a>
 
 <?php 
 
@@ -8,7 +11,7 @@
 	
 
 	$formStructureCollection = array(
-		array(
+		array(	// набор полей для обычного кредита
 			"sum",
 			"period",
 			"purpose",
@@ -17,7 +20,7 @@
 			"proof-of-income",
 			"advanced-repayment"
 			),
-		array(
+		array(	// набор полей для ипотеки
 			"sum",
 			"period",
 			"min-initial-instalment",
@@ -27,7 +30,7 @@
 			"bank",
 			"advanced-repayment"
 			),
-		array(
+		array(	// набор полей для авто-кредита
 			"sum",
 			"period",
 			"min-initial-instalment",
@@ -61,8 +64,6 @@
 
 ?>
 
-
-<link rel='stylesheet' type='text/css' href='./uy-style.css'>
 <div id='uslugi-yandex'>
 	<div id='uy-form'>
 		<table id='uy-form-table'>

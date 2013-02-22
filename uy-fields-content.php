@@ -1,5 +1,6 @@
 <?php
 
+		// названия полей
 	$descriptions = array(
 		"sum" => "Сумма кредита",
 		"period" => "Срок кредита",
@@ -16,7 +17,7 @@
 		"insurance" => "Страхование"
 		);
 
-
+		// верстка элементов ввода или сами поля
 	$controllers = array(
 		"sum" => "
 			<input name='sum' class='uy-input-text'> 

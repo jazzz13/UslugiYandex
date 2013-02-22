@@ -90,6 +90,7 @@
 </div>
 
 <script src='./jquery-1.9.1.min.js'></script>
+<script>var creditTypeId = <?php echo $formCreditId;?>;</script>
 <script src="./uy-script.js"></script>
 
 

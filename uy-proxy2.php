@@ -13,7 +13,7 @@ $urlAutoCredits = "/1.0/banks/autocredits/search";
 
 $creditTypeId = 0;
 
-if(!isset($_GET["creditTypeId"])){
+if(isset($_GET["creditTypeId"])){
 	$creditTypeId = (int)$_GET["creditTypeId"];
 }
 

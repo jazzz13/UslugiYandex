@@ -18,34 +18,88 @@ function initEvents(){
 
 function initRequest(){
 	showLoading();
-	requestWithData({});
+	requestWithData( buildParams() );
 }
 
 function showLoading(){
 	targetDiv.html("..получение данных..");
 }
 
+function buildParams(){
+
+	var data = {
+		region: "Москва",
+		currency: "RUB",
+		sum: "100",
+		period: "year",
+		creditTypeId : creditTypeId
+	};
+
+	buildOfTextFailds();
+	buildOfSelectList();
+
+	function buildOfTextFailds(){
+
+		var names = ["sum", "period", "region", "min-initial-instalment"];
+
+		$.each(names, function(i, item){
+
+			var textField = $("input[name="+item+"]");
+
+			if(textField.length){
+				var value = textField.val().trim();
+
+				if(value){
+					data[item] = value;
+				}
+			}
+		});
+	}
+
+	function buildOfSelectList(){
+
+		var names = ["bank", "purpose", "advanced-repayment", "dwelling"];
+
+		$.each(names, function(i, item){
+
+			var select = $("select[name="+item+"]");
+
+			if(select.length){
+				var value = select.val().trim();
+
+				if(value && value!="0"){
+					data[item] = value;
+				}
+			}
+		});
+	}
+
+	return data;
+}
 
 function requestWithData(data){
 
 	$.ajax(urlProxy, {
 		dataType: "xml",
-		data: {
-			region: "Москва",
-			currency: "RUB",
-			sum: "100",
-			period: "year"
-		},
+		data: data,
 		error: function(object){
 			console.log(object.responseText);
 		},
 		success: function(xml){
-			posteCredits( $(xml).find("credit") );
+
+			if(creditTypeId==1){
+				posteCredits( $(xml).find("mortgage") );
+			} else if(creditTypeId==2){
+				posteCredits( $(xml).find("autocredit") );
+			} else {
+				posteCredits( $(xml).find("credit") );
+			}
 		} 
 	}); 
 }
 
 function posteCredits(credits){
+
 	targetDiv.empty();
 
 	credits.each(function(i,item){

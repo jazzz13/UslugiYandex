@@ -57,7 +57,7 @@
 			</select>",
 
 		"region" => "
-			<input name='region' class='uy-input-text'>",
+			<input name='region' class='uy-input-text' value='Оренбург'>",
 
 		"bank" => "
 			<select name='bank' class='uy-select'>

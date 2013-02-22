@@ -18,13 +18,24 @@
 			"advanced-repayment"
 			),
 		array(
+			"sum",
+			"period",
 			"min-initial-instalment",
 			"dwelling",
-			"dwelling-readiness"
+			"dwelling-readiness",
+			"region",
+			"bank",
+			"advanced-repayment"
 			),
 		array(
+			"sum",
+			"period",
+			"min-initial-instalment",
 			"vendor-type",
 			"age-type",
+			"region",
+			"bank",
+			"advanced-repayment",
 			"insurance"
 			),
 	);
@@ -69,4 +80,15 @@
 
 		</table>
 	</div>
+	<br>
+	
+	<div id='uy-result'>
+		Результаты запроса
+	</div>
 </div>
+
+
+
+
+
+

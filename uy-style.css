@@ -1,12 +1,11 @@
 #uslugi-yandex {
-	width: 578px;
-	border: 1px solid silver;
+	width: 580px;
 	font-family: Tahoma;
 }
 
-#uy-form {
-	margin: 20px 10%;
-	width: 80%;
+#uy-form, #uy-result {
+	padding: 20px 10%;
+	border: 1px solid silver;
 }
 
 #uslugi-yandex table {

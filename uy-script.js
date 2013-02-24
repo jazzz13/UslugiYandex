@@ -71,6 +71,8 @@ function buildParams(){
 
 	buildOfRadio();
 
+	buildOfCheckBoxs();
+
 	postProcessing();
 
 
@@ -142,6 +144,20 @@ function buildParams(){
 					}
 				}
 			});
+		});
+	}
+
+	function buildOfCheckBoxs(){
+
+		var checkBoxs = $("#uy-form input[type=checkbox]");
+
+		checkBoxs.each(function(i, checkbox){
+			
+			if(checkbox.checked){
+				if(checkbox.name){
+					data[checkbox.name] = "true";
+				}
+			}
 		});
 	}
 

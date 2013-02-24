@@ -69,6 +69,8 @@ function buildParams(){
 
 	buildOfSelectList();
 
+	buildOfRadio();
+
 	postProcessing();
 
 
@@ -119,6 +121,27 @@ function buildParams(){
 					data[item] = value;
 				}
 			}
+		});
+	}
+
+	function buildOfRadio(){
+
+		var names = ["proof-of-income", "dwelling-readiness", "vendor-type", "age-type"];
+
+		$.each(names, function(i, item){
+			
+			var radios = $("input[type=radio][name="+item+"]");
+
+			radios.each(function(j, radio){
+
+				if(radio.checked){
+					var value = radio.value;
+
+					if(value && value!="0"){
+						data[item] = value;
+					}
+				}
+			});
 		});
 	}
 

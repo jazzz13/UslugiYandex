@@ -20,14 +20,14 @@
 		// верстка элементов ввода или сами поля
 	$controllers = array(
 		"sum" => "
-			<input name='sum' class='uy-input-text'> 
+			<input name='sum' class='uy-input-text' valid='^[0-9 ]{3,}$' value='100 000'> 
 			&nbsp &nbsp рублей",
 
 		"period" => "
-			<input name='period' class='uy-input-text'> 
+			<input name='period' class='uy-input-text' valid='^ *[0-9]+ *$' value='12'> 
 			&nbsp &nbsp
 			<select name='period-type' class='uy-select uy-select-mini'>
-				<option value='month' selected>месяцев</option>
+				<option value='months' selected>месяцев</option>
 				<option value='years'>лет</option>
 			</select>",
 
@@ -277,7 +277,7 @@
 			</select>",
 
 		"min-initial-instalment" => "
-			<input class='uy-input-text' name='min-initial-instalment'>
+			<input class='uy-input-text' name='min-initial-instalment' valid='^[0-9 ]{1,}$'>
 			&nbsp &nbsp рублей",
 
 		"dwelling" => "

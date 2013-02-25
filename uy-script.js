@@ -2,6 +2,61 @@ var urlProxy = "./uy-proxy2.php";
 
 var targetDiv, requestButton, fieldsWithValid;
 
+var resultTmpl = [
+	"<div class='uy-credit'>",
+		"<div class='uy-credit-name'>",
+			"<a href='$link'>",
+				"$name",
+			"</a>",
+		"</div>",
+		"<div class='uy-credit-bank'>",
+			"Банк: $bank",
+		"</div>",
+		"<table class='uy-credit-table'>",
+			"<tr class='uy-credit-table-tr-first'>",
+				"<td>Цель кредита",
+				"</td>",
+				"<td>Обеспечение",
+				"</td>",
+				"<td>Процентная ставка",
+				"</td>",
+				"<td>Первый взнос",
+				"</td>",
+				"<td>Ежемесячный платеж",
+				"</td>",
+				"<td>Переплата",
+				"</td>",
+			"</tr>",
+			"<tr class='uy-credit-table-tr-second'>",
+				"<td>$purpose",
+				"</td>",
+				"<td>$restrictions",
+				"</td>",
+				"<td>$rate",
+				"</td>",
+				"<td>$firstPay",
+				"</td>",
+				"<td>Ежемесячный платеж",
+				"</td>",
+				"<td>Переплата",
+				"</td>",
+			"</tr>",
+		"</table>",
+	"</div>"].join("");
+
+var currentDataRequest = {};
+
+var targetsDesc = {
+	ANY : "на любые цели",
+	EDUCATION : "на образование",
+	GOODS : "на товары",
+	TRAVEL : "на путешествие",
+	TREATMENT : "на лечение",
+	PERSONAL_SUBSIDIARY_PLOT : "на ведение подсобного хозяйства",
+	MORTGAGE_FIRST_PAYMENT : "на первый взнос по ипотеке",
+	OTHER : "другая, в частности не упомянутая цель или список целей"
+};
+
 function start(){
 	initElements();
 	initEvents();
@@ -179,6 +234,7 @@ function buildParams(){
 
 function requestWithData(data){
 
+	currentDataRequest = data;
 	console.log("request:", data);
 
 	$.ajax(urlProxy, {
@@ -202,14 +258,48 @@ function requestWithData(data){
 
 function posteCredits(credits){
 
+
 	targetDiv.empty();
 
-	credits.each(function(i,item){
+	credits.each(function(i, credit){
 
-		targetDiv.append( "<div class='uy-credit'>"+ $(item).find("name:eq(0)").text() +"</div>" );
+		var credit = $(credit);
+		var data = {};
+		var html = resultTmpl;
+
+		data.name = credit.find("name:eq(0)").text();
+		data.bank = credit.find("bank name:eq(0)").text();
+		data.link = credit.find("link:eq(0)").attr("href");
+		data.purpose = targetsDesc[credit.find("purpose:eq(0)").text()];
+		data.restrictions = (credit.find("restrictions:eq(0)").text() 
+			? "есть" 
+			: "нет" );
+		
+		data.rate = ( credit.find("rate min-value:eq(0)").length 
+			? credit.find("rate min-value:eq(0)").text()
+			: credit.find("rate max-value:eq(0)").text );
+		
+		if(parseFloat(data.rate) < 1){
+			data.rate = parseFloat(data.rate)*100;
+		} 
+
+		data.rate = parseInt( data.rate );
+
+		data.firstPay =  parseInt(data.rate)*currentDataRequest.sum/100;
+
+		$.each(data, function(name, value){
+
+			html = html.replace("$"+name, value);
+		});
+
+		targetDiv.append( html );
 	});
 }
 
 
-
 start();
+
+
+
+
+

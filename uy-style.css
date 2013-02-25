@@ -4,7 +4,7 @@
 }
 
 #uy-form, #uy-result {
-	padding: 20px 10%;
+	padding: 20px 5%;
 	border: 1px solid silver;
 }
 
@@ -40,11 +40,18 @@
 	padding-bottom: 20px;
 }
 
-.uy-credit-table td {
-	text-align: center;
+.uy-credit-table {
+	margin-top: 10px;
+	font-size: 11px;
 }
 
+.uy-credit-table-tr-first {
+	background: silver;
+}
 
+.uy-credit-table-tr-first td {
+	text-align:	center;
+}
 
 
 

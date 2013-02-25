@@ -4,6 +4,13 @@ header('Content-Type: text/xml; charset=utf-8');
 
 $apiKey = "hbFWpwACAAABPPb6QEWsXrzh0X6HgHzi0zN7lZMXh8f7hA";
 
+
+if(isset($_GET["creditFullInfo"])){
+	print YaGet( $_GET["creditFullInfo"]."?key=".$apiKey );
+
+	exit();
+}
+
 $baseURLAPI = "http://api.uslugi.yandex.ru";
 
 $urlCommonCredits = "/1.0/banks/credits/search";

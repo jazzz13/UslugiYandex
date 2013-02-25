@@ -3,7 +3,7 @@ var urlProxy = "./uy-proxy2.php";
 var targetDiv, requestButton, fieldsWithValid;
 
 var resultTmpl = [
-	"<div class='uy-credit'>",
+	"<div class='uy-credit' credit-id='$id'>",
 		"<div class='uy-credit-name'>",
 			"<a href='$link'>",
 				"$name",
@@ -115,7 +115,8 @@ function buildParams(){
 		currency: "RUB",
 		sum: "100",
 		period: "year",
-		creditTypeId : creditTypeId
+		creditTypeId : creditTypeId,
+		limit: "50"
 	};
 
 	buildOfTextFailds();
@@ -245,15 +246,20 @@ function requestWithData(data){
 		},
 		success: function(xml){
 
-			if(creditTypeId==1){
-				posteCredits( $(xml).find("mortgage") );
-			} else if(creditTypeId==2){
-				posteCredits( $(xml).find("autocredit") );
-			} else {
-				posteCredits( $(xml).find("credit") );
-			}
+			posteCredits( getChildrenInXMLByCreditType(xml) );
 		} 
 	}); 
+}
+
+function getChildrenInXMLByCreditType(xml){
+
+	if(creditTypeId==1){
+		return $(xml).find("mortgage");
+	} else if(creditTypeId==2){
+		return $(xml).find("autocredit");
+	} else {
+		return $(xml).find("credit");
+	}	
 }
 
 function posteCredits(credits){
@@ -267,6 +273,7 @@ function posteCredits(credits){
 		var data = {};
 		var html = resultTmpl;
 
+		data.id = credit.find("id:eq(0)").text();
 		data.name = credit.find("name:eq(0)").text();
 		data.bank = credit.find("bank name:eq(0)").text();
 		data.link = credit.find("link:eq(0)").attr("href");
@@ -287,6 +294,7 @@ function posteCredits(credits){
 
 		data.firstPay =  parseInt(data.rate)*currentDataRequest.sum/100;
 
+
 		$.each(data, function(name, value){
 
 			html = html.replace("$"+name, value);
@@ -294,10 +302,54 @@ function posteCredits(credits){
 
 		targetDiv.append( html );
 	});
+
+	targetDiv.find("a").click(creditLinkClick);
+
+	function creditLinkClick(event){
+		event.preventDefault();
+
+		requestCredit(this.href);
+
+		var creditDiv = $(this).parents("div[credit-id]:eq(0)");
+	}
 }
 
+function requestCredit(url){
+
+	console.log(url);
+
+	$.ajax(urlProxy, {
+		dataType: "xml",
+		data: {
+			creditFullInfo: url
+		},
+		error: function(object){
+			console.log(object.responseText);
+		},
+		success: function(xml){
+			postFullCreditInfo( getChildrenInXMLByCreditType(xml) );	
+		} 
+	}); 
+}
+
+function postFullCreditInfo( credit ){
+	var id = credit.find("id:eq(0)").text();
+	var creditDiv = targetDiv.find("div[credit-id="+id+"]");
+
+	var data = {};
+
+	creditDiv.append("<div> lol </div>");
+
+}
 
 start();
+
+
+
+
+
+
+
 
 
 

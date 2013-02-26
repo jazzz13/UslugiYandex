@@ -87,6 +87,67 @@
 	<div id='uy-result'>
 		Результаты запроса
 	</div>
+
+	<div id='uy-templates'>
+		<div id='uy-template-result-small-info'>
+			<div class='uy-credit' credit-id='$id'>  
+				<div class='uy-credit-name'>  
+					<a href='$link'>  
+						$name  
+					</a>  
+				</div>  
+				<div class='uy-credit-bank'>  
+					Банк: $bank  
+				</div>  
+				<table class='uy-credit-table'>  
+					<tr class='uy-credit-table-tr-first'>  
+						<td class='uy-field-purpose'>
+							Цель кредита  
+						</td>  
+						<td>
+							Обеспечение  
+						</td>  
+						<td>
+							Процентная ставка  
+						</td>  
+						<td class='uy-field-firstPay'>
+							Первый взнос  
+						</td>  
+						<td>
+							Ежемесячный платеж  
+						</td>  
+						<td>
+							Переплата  
+						</td>  
+					</tr>  
+					<tr class='uy-credit-table-tr-second'>  
+						<td class='uy-field-purpose'>
+							$purpose  
+						</td>  
+						<td>
+							$restrictions  
+						</td>  
+						<td>
+							$rate  
+						</td>  
+						<td class='uy-field-firstPay'>
+							$firstPay  
+						</td>  
+						<td>
+							$monthPay  
+						</td>  
+						<td>
+							$overPay  
+						</td>  
+					</tr>  
+				</table>  
+			</div>
+		</div>
+
+		<div id='uy-template-result-full-info'>
+		</div>
+	</div>
+
 </div>
 
 <script src='./jquery-1.9.1.min.js'></script>

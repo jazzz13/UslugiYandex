@@ -43,17 +43,15 @@
 .uy-credit-table {
 	margin-top: 10px;
 	font-size: 11px;
+	text-align:	center;
 }
 
 .uy-credit-table-tr-first {
 	background: silver;
 }
 
-.uy-credit-table-tr-first td {
-	text-align:	center;
+#uy-templates {
+	display: none;
 }
-
-
-
 
 

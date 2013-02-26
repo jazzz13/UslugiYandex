@@ -141,10 +141,189 @@
 						</td>  
 					</tr>  
 				</table>  
+				<div class='uy-credit-full-info'>
+				</div>
 			</div>
 		</div>
 
 		<div id='uy-template-result-full-info'>
+			<a href="#" class='uy-full-info-close'>
+				скрыть информацию &darr;
+			</a>
+			<table class='uy-full-result-table uy-full-result-table-general'>
+				<tr>
+					<td>
+						Процент
+					</td>
+					<td>
+						$minRate - $maxRate
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Сумма
+					</td>
+					<td>
+						$minSum - $maxSum
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Срок
+					</td>
+					<td>
+						$period
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Первоначальный взнос
+					</td>
+					<td>
+						$firstPay
+					</td>
+				</tr>
+			</table>
+
+			<table class='uy-full-result-table'>
+				<tr class='uy-full-result-tr-header'>
+					<td>
+						Параметры кредита
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Цель
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Схема расчета
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr class='uy-full-result-tr-header'>
+					<td>
+						Досрочное погашение
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Возможность досрочного погашения
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Комиссия/штраф за досрочное погашение
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr class='uy-full-result-tr-header'>
+					<td>
+						Другие предоставляемые документы
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						документы, подтверждающие кредитную историю
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						заявление-анкета
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						паспорт
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						военный билет
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						заверенная копия трудовой книжки
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						свидетельство о браке (разводе, смерти супруга), брачный контракт (при наличии)
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						страховое свидетельство государственного пенсионного страхования
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						дипломы об образовании
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						документы о собственности на активы
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						свидетельства о рождении/паспорта несовершеннолетних детей
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr class='uy-full-result-tr-header'>
+					<td>
+						Страхование
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+					</td>
+					<td>
+					</td>
+				</tr>
+			</table>
+
+			<a href="#" class='uy-full-info-close'>
+				скрыть информацию &uarr;
+			</a>
+
 		</div>
 	</div>
 

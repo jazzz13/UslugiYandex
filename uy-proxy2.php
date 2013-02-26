@@ -61,7 +61,7 @@ function YaGet($url) {
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_REFERER , "http://" .$_SERVER['HTTP_HOST'] );
+	//curl_setopt($ch, CURLOPT_REFERER , "http://" .$_SERVER['HTTP_HOST'] );
 	curl_setopt($ch, CURLOPT_REFERER , "http://smartcredits.ru");
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array($url, 'GET'));

@@ -2,6 +2,8 @@ var urlProxy = "./uy-proxy2.php";
 
 var targetDiv, requestButton, fieldsWithValid;
 
+var creditDivForFullData;
+
 var templates = {};
 
 var currentDataRequest = {};
@@ -34,6 +36,7 @@ function initTemplates(){
 	var rootElement = $("#uy-templates");
 
 	templates.resultSmalInfo = rootElement.find("#uy-template-result-small-info").html();
+	templates.resultFullInfo = rootElement.find("#uy-template-result-full-info").html();
 }
 
 function initEvents(){
@@ -47,6 +50,10 @@ function initRequest(){
 		showLoading();
 		requestWithData( buildParams() );
 	}
+
+	function showLoading(){
+		targetDiv.html("..получение данных..");
+	}	
 }
 
 function verification(){
@@ -72,9 +79,6 @@ function verification(){
 	return valid;
 }
 
-function showLoading(){
-	targetDiv.html("..получение данных..");
-}
 
 function buildParams(){
 
@@ -257,37 +261,13 @@ function posteCredits(credits){
 		var data = {};
 		var html = templates.resultSmalInfo;
 
-		buildData();
+		data = parseDataFromXml(credit);
 
-		function buildData(){
+		var dataForTmpl = processingData(data);
 
-			data.id = credit.find("id:eq(0)").text();
-			data.name = credit.find("name:eq(0)").text();
-			data.bank = credit.find("bank name:eq(0)").text();
-			data.link = credit.find("link:eq(0)").attr("href");
-			data.purpose = targetsDesc[credit.find("purpose:eq(0)").text()];
-			data.restrictions = (credit.find("restrictions:eq(0)").text() 
-				? "есть" 
-				: "нет" );
-			
-			data.rate = ( credit.find("rate min-value:eq(0)").length 
-				? credit.find("rate min-value:eq(0)").text()
-				: credit.find("rate max-value:eq(0)").text );
-			
-			if(parseFloat(data.rate) < 1){
-				data.rate = parseFloat(data.rate)*100;
-			} 
+		targetDiv.append( fillTemplate(html, dataForTmpl) );
 
-			data.rate = parseFloat( data.rate ).toFixed(1);
-
-			data.firstPay = "от " + parseInt( credit.find("min-initial-instalment:eq(0)").text() ) + "%";
-
-			data.monthPay = monthPayByParams( currentDataRequest.sum, data.rate, currentDataRequest.period );
-
-			data.overPay = ( parseInt( currentDataRequest.period ) * data.monthPay ) - parseInt(currentDataRequest.sum);
-		}
-
-		targetDiv.append( fillTemplate(html, data) );
+		$.data( targetDiv.find(".uy-credit:last-child")[0], "data", data);
 	});
 	
 	if(isCommonCredit()){
@@ -297,7 +277,51 @@ function posteCredits(credits){
 		targetDiv.find(".uy-field-purpose").remove();
 	}
 
-	targetDiv.find("a").click(creditLinkClick);
+	targetDiv.find("a").click(initRequestFullData);
+}
+
+function parseDataFromXml(credit){
+
+	var data = {};
+
+	data.id = credit.find("id:eq(0)").text();
+	data.name = credit.find("name:eq(0)").text();
+	data.bank = credit.find("bank name:eq(0)").text();
+	data.link = credit.find("link:eq(0)").attr("href");
+	data.purpose = targetsDesc[credit.find("purpose:eq(0)").text()];
+	data.restrictions = credit.find("restrictions:eq(0)").text();
+	
+	data.rate = ( credit.find("rate min-value:eq(0)").length 
+		? credit.find("rate min-value:eq(0)").text()
+		: credit.find("rate max-value:eq(0)").text() );
+	
+	data.rate = floatToPercent( data.rate );
+
+	data.firstPay = parseInt( credit.find("min-initial-instalment:eq(0)").text() );
+	if(!data.firstPay)
+		data.firstPay = 0;
+
+	data.monthPay = monthPayByParams( currentDataRequest.sum, data.rate, currentDataRequest.period );
+
+	data.overPay = ( parseInt( currentDataRequest.period ) * data.monthPay ) - parseInt(currentDataRequest.sum);
+
+	return data;
+}
+
+function floatToPercent(f){
+	if(parseFloat(f) < 1){
+		f = parseFloat(f)*100;
+	} 
+	return parseFloat( f ).toFixed(1);;
+}
+
+function processingData(data){
+
+	data.restrictions = (data.restrictions.trim() ? "есть" : "нет" );
+	//data.rate = data.rate + "%"
+	data.firstPay = data.firstPay + "%";
+
+	return data;
 }
 
 function monthPayByParams(sum, rate, months) {
@@ -323,12 +347,17 @@ function fillTemplate(tmpl, data){
 	return result;
 }
 
-function creditLinkClick(event){
+function initRequestFullData(event){
 	event.preventDefault();
 
 	requestCredit(this.href);
 
-	var creditDiv = $(this).parents("div[credit-id]:eq(0)");
+	creditDivForFullData = $(this).parents("div[credit-id]:eq(0)");
+	var smallInfoTable = creditDivForFullData.find(".uy-credit-table:eq(0)");
+	var fullInfoDiv = creditDivForFullData.find(".uy-credit-full-info:eq(0)");
+
+	smallInfoTable.hide();
+	fullInfoDiv.show();
 }
 
 function requestCredit(url){
@@ -350,16 +379,79 @@ function requestCredit(url){
 }
 
 function postFullCreditInfo( credit ){
-	var id = credit.find("id:eq(0)").text();
-	var creditDiv = targetDiv.find("div[credit-id="+id+"]");
 
-	var data = {};
+	console.log(credit[0]);
 
-	creditDiv.append("<div> lol </div>");
+	var smallInfoTable = creditDivForFullData.find(".uy-credit-table:eq(0)");
+	var fullInfoDiv = creditDivForFullData.find(".uy-credit-full-info:eq(0)");
 
+	var data = parseFullXmlFromData(credit);
+	
+	var html = templates.resultFullInfo;
+
+	data = processingData(data);
+
+	html = fillTemplate(html, data);
+
+	fullInfoDiv.empty().html( html );
+
+	fullInfoDiv.find("a.uy-full-info-close").click(function(e){
+		e.preventDefault();
+		fullInfoDiv.slideUp(function(){
+			smallInfoTable.show();
+		});
+	});	
+}
+
+function parseFullXmlFromData(credit){
+
+	var data = parseDataFromXml(credit);
+	var rate = getCurRate();
+
+	data.minRate = floatToPercent( rate.find("min-value").text() );
+	if(!data.minRate)
+		data.minRate = 0;
+
+	data.maxRate = floatToPercent( rate.find("max-value").text() );
+	if(!data.maxRate)
+		data.maxRate = Infinity;
+
+	data.minSum = parseInt( rate.find("min-sum").text() );
+	if(!data.minSum)
+		data.minSum = 0;
+
+	data.maxSum = parseInt( rate.find("max-sum").text() );
+	if(!data.maxSum)
+		data.maxSum = Infinity;
+
+	return data;
+
+	function getCurRate(){
+
+		var smallData = $.data(creditDivForFullData[0], "data");
+		var currencys = credit.find("rate currency:contains(RUB)");
+
+		var rate;
+
+		currencys.each(function(i, currency){
+
+			rate = $(currency).parent();
+			var regExp = new RegExp( parseInt(smallData.rate) + "" );
+
+			if( regExp.test( rate.find("min-value").text() ) || regExp.test( rate.find("max-value").text() ) ) {
+
+				return false;
+			}
+			
+		});
+
+		return rate;
+	}
 }
 
 start();
+
+
 
 
 

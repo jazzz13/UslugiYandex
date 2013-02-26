@@ -54,4 +54,49 @@
 	display: none;
 }
 
+.uy-credit-full-info {
+	padding-top: 10px;
+}
 
+.uy-full-result-table {
+	font-size: 14px;
+}
+
+a.uy-full-info-close {
+	display: block;
+	float: right;
+	font-size: 12px;
+	padding-bottom: 5px;
+}
+
+.uy-full-result-table td{
+	padding-top: 8px;
+}
+
+.uy-full-result-table td:first-child {
+	width: 70%;
+}
+
+.uy-full-result-table-general {
+	border-spacing: 0;
+	border: 1px solid black;
+	border-left: 0;
+	border-top: 0;
+}
+
+.uy-full-result-table-general td{
+	padding-top: 0px;
+	vertical-align: middle;
+	height: 25px;
+	border: 1px solid black;
+	border-right: 0;
+	border-bottom: 0;
+}
+
+.uy-full-result-tr-header {
+	font-weight: 600;
+}
+
+.uy-full-result-tr-header td {
+	padding-top: 15px;
+}

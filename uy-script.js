@@ -403,7 +403,7 @@ function postFullCreditInfo( credit ){
 	var fullInfoDiv = creditDivForFullData.find(".uy-credit-full-info:eq(0)");
 
 	var data = parseFullXmlFromData(credit);
-	
+
 	var html = templates.resultFullInfo;
 
 	data = processingData(data);
@@ -411,6 +411,8 @@ function postFullCreditInfo( credit ){
 	html = fillTemplate(html, data);
 
 	fullInfoDiv.empty().html( html );
+
+	makeGeneralTable(fullInfoDiv, makeMatrixWithRates(data.rates));
 
 	fullInfoDiv.find("a.uy-full-info-close").click(function(e){
 		e.preventDefault();
@@ -420,34 +422,119 @@ function postFullCreditInfo( credit ){
 	});	
 }
 
+function makeMatrixWithRates(rates){
+	var mass = [];
+
+	$.each(rates, function(i, rate){
+		
+		var subMass = [];
+
+		var cRate = getRange(rate.minRate, rate.maxRate);
+
+		var cSum = getRange(rate.minSum, rate.maxSum);
+
+		var cPer = getRange(rate.minPeriod, rate.maxPeriod);
+
+		var cInst = getRange(rate.minInstalment, rate.maxInstalment);
+
+		if(cInst == Infinity)
+			cInst = " - ";
+
+		subMass.push(cRate);
+		subMass.push(cSum);
+		subMass.push(cPer);
+		subMass.push(cInst);
+
+		mass.push(subMass);
+	});
+
+	return mass;
+
+	function getRange(a, b){
+		if(b){
+			if(a){
+				if(a == b){
+					return a;
+				} else {
+					return a + " - " + b;
+				}
+			} else {
+				return b;
+			}
+		} else {
+			return a;
+		}
+	}
+}
+
+function makeGeneralTable(div, matrix){
+
+	var table = div.find(".uy-full-result-table-general");
+
+	table.find("tr").each(function(i, tr){
+
+		var tr = $(tr);
+
+		$.each(matrix, function(k, value){
+
+			tr.append( "<td>"+ matrix[k][i] +"</td>" );
+		});
+	});
+
+}
+
 function parseFullXmlFromData(credit){
 
 	var data = parseDataFromXml(credit);
-	var rate = getCurRate();
+	var rubCurrencys = credit.find("rate currency:contains(RUB)");
 
-	data.minRate = floatToPercent( rate.find("min-value").text() );
-	if(!data.minRate)
-		data.minRate = 0;
+	data.rates = [];
 
-	data.maxRate = floatToPercent( rate.find("max-value").text() );
-	if(!data.maxRate)
-		data.maxRate = Infinity;
+	rubCurrencys.each(function(i, currency){
+		
+		var rate = $(currency).parent();
+		var rateObject = {};
 
-	data.minSum = parseInt( rate.find("min-sum").text() );
-	if(!data.minSum)
-		data.minSum = 0;
+		rateObject.minRate = floatToPercent( rate.find("min-value").text() );
+		if(!rateObject.minRate)
+			rateObject.minRate = 0;
 
-	data.maxSum = parseInt( rate.find("max-sum").text() );
-	if(!data.maxSum)
-		data.maxSum = Infinity;
+		rateObject.maxRate = floatToPercent( rate.find("max-value").text() );
+		if(!rateObject.maxRate)
+			rateObject.maxRate = Infinity;
 
-	data.minPeriod = parseInt( rate.find("min-period").text() );
+		rateObject.minSum = parseInt( rate.find("min-sum").text() );
+		if(!rateObject.minSum)
+			rateObject.minSum = 0;
 
-	data.maxPeriod = parseInt( rate.find("max-period").text() );
+		rateObject.maxSum = parseInt( rate.find("max-sum").text() );
+		if(!rateObject.maxSum)
+			rateObject.maxSum = Infinity;
 
-	data.interval = rate.find( rate.find("min-period").attr("interval") );
-	if(!data.interval)
-		data.interval = rate.find( rate.find("max-period").attr("interval") );
+		rateObject.minPeriod = parseInt( rate.find("min-period").text() );
+		if(!rateObject.minPeriod)
+			rateObject.minPeriod = 0;
+
+		rateObject.maxPeriod = parseInt( rate.find("max-period").text() );
+		if(!rateObject.maxPeriod)
+			rateObject.maxPeriod = Infinity;
+
+		rateObject.minInstalment = parseInt( rate.find("min-initial-instalment").text() );
+		if(!rateObject.minInstalment)
+			rateObject.minInstalment = 0;
+
+		rateObject.maxInstalment = parseInt( rate.find("max-initial-instalment").text() );
+		if(!rateObject.maxInstalment)
+			rateObject.maxInstalment = Infinity;
+
+		rateObject.interval = rate.find( rate.find("min-period").attr("interval") );
+		if(!rateObject.interval)
+			rateObject.interval = rate.find( rate.find("max-period").attr("interval") );
+
+
+		data.rates.push(rateObject);
+	});
+
 
 	data.paymentScheme = paymentSchemeDesc[ credit.find("payment scheme:eq(0)").text() ];
 	if(!data.paymentScheme)
@@ -460,31 +547,6 @@ function parseFullXmlFromData(credit){
 	data.advancedRepaymentFee = credit.find("advanced-repayment fee-description:eq(0)").text();
 
 	return data;
-
-	function getCurRate(){
-
-		var smallData = $.data(creditDivForFullData[0], "data");
-		var currencys = credit.find("rate currency:contains(RUB)");
-
-		var rate;
-
-		currencys.each(function(i, currency){
-
-			rate = $(currency).parent();
-			var regExpMin = new RegExp( parseInt(smallData.minRate) + "" );
-			var regExpMax = new RegExp( parseInt(smallData.maxRate) + "" );
-
-			if( floatToPercent( rate.find("min-value").text() ) == smallData.minRate 
-				|| floatToPercent( rate.find("max-value").text() ) == smallData.maxRate ) {
-
-				return false;
-			}
-		});
-
-		console.log(rate[0]);
-
-		return rate;
-	}
 }
 
 start();

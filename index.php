@@ -155,32 +155,20 @@
 					<td>
 						Процент
 					</td>
-					<td>
-						$minRate - $maxRate
-					</td>
 				</tr>
 				<tr>
 					<td>
 						Сумма
-					</td>
-					<td>
-						$minSum - $maxSum
 					</td>
 				</tr>
 				<tr>
 					<td>
 						Срок
 					</td>
-					<td>
-						$minPeriod - $maxPeriod
-					</td>
 				</tr>
 				<tr>
 					<td>
 						Первоначальный взнос
-					</td>
-					<td>
-						$firstPay
 					</td>
 				</tr>
 			</table>

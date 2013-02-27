@@ -172,7 +172,7 @@
 						Срок
 					</td>
 					<td>
-						$period
+						$minPeriod - $maxPeriod
 					</td>
 				</tr>
 				<tr>
@@ -198,6 +198,7 @@
 						Цель
 					</td>
 					<td>
+						$purpose
 					</td>
 				</tr>
 				<tr>
@@ -205,6 +206,7 @@
 						Схема расчета
 					</td>
 					<td>
+						$paymentScheme
 					</td>
 				</tr>
 				<tr class='uy-full-result-tr-header'>
@@ -219,6 +221,7 @@
 						Возможность досрочного погашения
 					</td>
 					<td>
+						$advancedRepayment
 					</td>
 				</tr>
 				<tr>
@@ -226,6 +229,7 @@
 						Комиссия/штраф за досрочное погашение
 					</td>
 					<td>
+						$advancedRepaymentFee
 					</td>
 				</tr>
 				<tr class='uy-full-result-tr-header'>

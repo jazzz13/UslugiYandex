@@ -19,6 +19,19 @@ var targetsDesc = {
 	OTHER : "другая, в частности не упомянутая цель или список целей"
 };
 
+var paymentSchemeDesc = {
+	"ANNUITY" : "аннуитетные платежи, равными долями",
+	"DIFFERENTIAL" : "дифференцированные платежи",
+	"CLIENT_CHOICE" : "аннуитетные или дифференцированные платежи по выбору клиента"
+};
+
+var advancedRepaymentDesc = {
+	"ONE_PAYMENT_WHOLE_SUM" : "можно погасить только полностью одним платежом",
+	"ONLY_PARTIAL" : "можно погасить только часть суммы",
+	"PARTIAL_AND_WHOLE" : "можно погашать и целиком, и частями",
+	"NO" : "досрочного погашения нет"
+};
+
 function start(){
 	initElements();
 	initTemplates();
@@ -288,14 +301,18 @@ function parseDataFromXml(credit){
 	data.name = credit.find("name:eq(0)").text();
 	data.bank = credit.find("bank name:eq(0)").text();
 	data.link = credit.find("link:eq(0)").attr("href");
+
 	data.purpose = targetsDesc[credit.find("purpose:eq(0)").text()];
+	if(!data.purpose)
+		data.purpose = "";
+
 	data.restrictions = credit.find("restrictions:eq(0)").text();
 	
-	data.rate = ( credit.find("rate min-value:eq(0)").length 
-		? credit.find("rate min-value:eq(0)").text()
-		: credit.find("rate max-value:eq(0)").text() );
-	
-	data.rate = floatToPercent( data.rate );
+	data.minRate = floatToPercent( credit.find("rate min-value:eq(0)").text() );
+
+	data.maxRate = floatToPercent( credit.find("rate max-value:eq(0)").text() );
+
+	data.rate = data.minRate ? data.minRate : data.maxRate;
 
 	data.firstPay = parseInt( credit.find("min-initial-instalment:eq(0)").text() );
 	if(!data.firstPay)
@@ -424,6 +441,24 @@ function parseFullXmlFromData(credit){
 	if(!data.maxSum)
 		data.maxSum = Infinity;
 
+	data.minPeriod = parseInt( rate.find("min-period").text() );
+
+	data.maxPeriod = parseInt( rate.find("max-period").text() );
+
+	data.interval = rate.find( rate.find("min-period").attr("interval") );
+	if(!data.interval)
+		data.interval = rate.find( rate.find("max-period").attr("interval") );
+
+	data.paymentScheme = paymentSchemeDesc[ credit.find("payment scheme:eq(0)").text() ];
+	if(!data.paymentScheme)
+		data.paymentScheme = "";
+
+	data.advancedRepayment = advancedRepaymentDesc[ credit.find("advanced-repayment scheme:eq(0)").text() ];
+	if(!data.advancedRepayment)
+		data.advancedRepayment = "";
+
+	data.advancedRepaymentFee = credit.find("advanced-repayment fee-description:eq(0)").text();
+
 	return data;
 
 	function getCurRate(){
@@ -436,14 +471,17 @@ function parseFullXmlFromData(credit){
 		currencys.each(function(i, currency){
 
 			rate = $(currency).parent();
-			var regExp = new RegExp( parseInt(smallData.rate) + "" );
+			var regExpMin = new RegExp( parseInt(smallData.minRate) + "" );
+			var regExpMax = new RegExp( parseInt(smallData.maxRate) + "" );
 
-			if( regExp.test( rate.find("min-value").text() ) || regExp.test( rate.find("max-value").text() ) ) {
+			if( floatToPercent( rate.find("min-value").text() ) == smallData.minRate 
+				|| floatToPercent( rate.find("max-value").text() ) == smallData.maxRate ) {
 
 				return false;
 			}
-			
 		});
+
+		console.log(rate[0]);
 
 		return rate;
 	}

@@ -32,6 +32,42 @@ var advancedRepaymentDesc = {
 	"NO" : "досрочного погашения нет"
 };
 
+var proofIncomeDesc = {
+	"NDFL2": "НДФЛ-2",
+	"NDFL3": "НДФЛ-3",
+	"NDFL4": "НДФЛ-4",
+	"FREE_FORM_REFERENCE": "справка в свободной форме",
+	"PENSION_FUND_REFERENCE": "справка из пенсионного фонда",
+	"BANK_FORM_REFERENCE": "справка по форме банка",
+	"PROOF_ADDITIONAL_REVENUE": "документальное подтверждение дополнительного дохода"
+};
+
+var otherProofIncomeDesc = {
+	"APPLICATION_FORM" : "заявление-анкета",
+	"PASSPORT": "паспорт",
+	"PASSPORT_ALL_PAGES_COPY": "копия всех страниц паспорта",
+	"MILITARY_ID": "военный билет",
+	"CERTIFIED_COPY_OF_WORK_RECORD": "заверенная копия трудовой книжки",
+	"MARRIAGE_CERTIFICATE": "свидетельство о браке (разводе, смерти супруга), брачный контракт (при наличии)",
+	"SPOUSE_PASSPORT": "паспорт супруги(га) (для заемщиков, состоящих в браке)",
+	"INN": "ИНН",
+	"PENSION_INSURANCE_CERTIFICATE": "страховое свидетельство государственного пенсионного страхования",
+	"INTERNATIONAL_PASSPORT": "загранпаспорт",
+	"DRIVING_LICENSE": "водительское удостоверение",
+	"TEMPORARY_REGISTRATION_CERTIFICATE_COPY": "копия свидетельства о временной регистрации (если применимо)",
+	"ACADEMIC_CREDENTIALS": "дипломы об образовании",
+	"ASSET_OWNERSHIP_DOCUMENTS": "документы о собственности на активы",
+	"CHILDREN_DOCUMENTS": "свидетельства о рождении/паспорта несовершеннолетних детей",
+	"CREDIT_HISTORY_DOCUMENTS": "документы, подтверждающие кредитную историю",
+	"PLEDGE_DOCUMENTS": "документы по предоставляемому залогу",
+	"DETOXIFICATION_CENTER_CERTIFICATE": "правка из наркологического центра заемщика (созаемщика)",
+	"PSYCHONEUROLOGICAL_CENTER_CERTIFICATE": "справка из психоневрологического диспансера заемщика (созаемщика)",
+	"SIC": "СИК (социальный индивидуальный код)",
+	"PNN": "РНН (регистрационный номер налогоплательщика)",
+	"REG_BOOK_OR_ADDR_BUREAU_SPRAVKA": "книга регистрации граждан либо справка из адресного бюро",
+	"OTHER_DOCUMENTS": "другие документы"
+};
+
 function start(){
 	initElements();
 	initTemplates();
@@ -338,6 +374,9 @@ function processingData(data){
 	//data.rate = data.rate + "%"
 	data.firstPay = data.firstPay + "%";
 
+	if(!data.advancedRepaymentFee)
+		data.advancedRepaymentFee = "отсутствует";
+
 	return data;
 }
 
@@ -414,12 +453,51 @@ function postFullCreditInfo( credit ){
 
 	makeGeneralTable(fullInfoDiv, makeMatrixWithRates(data.rates));
 
+	makeDocumentTable(fullInfoDiv, credit);
+
 	fullInfoDiv.find("a.uy-full-info-close").click(function(e){
 		e.preventDefault();
 		fullInfoDiv.slideUp(function(){
 			smallInfoTable.show();
 		});
 	});	
+}
+
+function makeDocumentTable(fullInfoDiv, credit){
+
+	var generalDocumentTitle = "Документы для подтверждения дохода";
+	var otherDocumentTitle = "Другие предоставляемые документы";
+
+	var generalTr = fullInfoDiv.find("table tr:contains("+generalDocumentTitle+")");
+	var otherTr = fullInfoDiv.find("table tr:contains("+otherDocumentTitle+")");
+
+	credit.find("proof-of-income documents document").each(function(i, doc){
+		var doc = $(doc);
+		var key = doc.text().trim();
+		var attr = doc.attr("required");
+		var req = "обязателен";
+
+		if(attr == "DESIRABLE_ON_DEMAND")
+			req = "желательно или по требованию";
+		if(attr == "CHOOSINGLY")
+			req = "по выбору";
+
+		generalTr.after("<tr><td>"+proofIncomeDesc[key]+"</td><td>"+req+"</td></tr>");
+	});
+
+	credit.find("other-provided-documents documents document").each(function(i, doc){
+		var doc = $(doc);
+		var key = doc.text().trim();
+		var attr = doc.attr("required");
+		var req = "обязателен";
+
+		if(attr == "DESIRABLE_ON_DEMAND")
+			req = "желательно или по требованию";
+		if(attr == "CHOOSINGLY")
+			req = "по выбору";
+
+		otherTr.after("<tr><td>"+otherProofIncomeDesc[key]+"</td><td>"+req+"</td></tr>");
+	});
 }
 
 function makeMatrixWithRates(rates){

@@ -81,6 +81,10 @@ a.uy-full-info-close {
 	width: auto;
 }
 
+.uy-full-result-table-general td {
+	text-align: center;
+}
+
 .uy-full-result-table-general {
 	border-spacing: 0;
 	border: 1px solid black;

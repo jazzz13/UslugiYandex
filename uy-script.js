@@ -423,47 +423,63 @@ function postFullCreditInfo( credit ){
 }
 
 function makeMatrixWithRates(rates){
+	var keys = ["Rate", "Sum", "Period", "Instalment"];
 	var mass = [];
 
 	$.each(rates, function(i, rate){
 		
 		var subMass = [];
 
-		var cRate = getRange(rate.minRate, rate.maxRate);
+		$.each(keys, function(i, key){
 
-		var cSum = getRange(rate.minSum, rate.maxSum);
+			var value = getRange(rate["min"+key], rate["max"+key], key, rate.interval); 
 
-		var cPer = getRange(rate.minPeriod, rate.maxPeriod);
-
-		var cInst = getRange(rate.minInstalment, rate.maxInstalment);
-
-		if(cInst == Infinity)
-			cInst = " - ";
-
-		subMass.push(cRate);
-		subMass.push(cSum);
-		subMass.push(cPer);
-		subMass.push(cInst);
+			subMass.push( value );
+		});
 
 		mass.push(subMass);
 	});
 
 	return mass;
 
-	function getRange(a, b){
-		if(b){
-			if(a){
-				if(a == b){
-					return a;
-				} else {
-					return a + " - " + b;
-				}
+	function getRange(a, b, key, interval){
+
+		var result = "";
+		
+		if(a!=0 && b == Infinity){
+			if(key == "Period" || key == "Sum" || "Instalment"){
+				result = "от " + a;
+			} else {
+				return a;
+			}
+		}
+
+		if(a==0 && b < Infinity){
+			if(key == "Period" || key == "Sum" || "Instalment"){
+				result = "до " + b;
 			} else {
 				return b;
-			}
-		} else {
-			return a;
+			}			
 		}
+
+		if(a != 0 && b < Infinity){
+			result = a+" - "+b;
+		}
+
+		if(a == b){
+			result = a;
+		}
+
+		if(key == "Instalment" || key == "Rate")
+			result += " %";
+
+		if(key == "Period")
+			result += (interval=="MONTH" ? " мес." : " л." );
+
+		if(a==0 && b == Infinity)
+			result = " - ";
+
+		return result;
 	}
 }
 
@@ -471,16 +487,19 @@ function makeGeneralTable(div, matrix){
 
 	var table = div.find(".uy-full-result-table-general");
 
-	table.find("tr").each(function(i, tr){
+	$.each(matrix, function(i, mass){
 
-		var tr = $(tr);
+		var tr = $("<tr></tr>");
 
-		$.each(matrix, function(k, value){
+		$.each(mass, function(k, value){
 
-			tr.append( "<td>"+ matrix[k][i] +"</td>" );
+			var td = $("<td>" + value + "</td>");
+
+			tr.append(td);
 		});
-	});
 
+		table.append(tr);
+	});
 }
 
 function parseFullXmlFromData(credit){
@@ -527,9 +546,9 @@ function parseFullXmlFromData(credit){
 		if(!rateObject.maxInstalment)
 			rateObject.maxInstalment = Infinity;
 
-		rateObject.interval = rate.find( rate.find("min-period").attr("interval") );
+		rateObject.interval =  rate.find("min-period").attr("interval") ;
 		if(!rateObject.interval)
-			rateObject.interval = rate.find( rate.find("max-period").attr("interval") );
+			rateObject.interval = rate.find("max-period").attr("interval") ;
 
 
 		data.rates.push(rateObject);

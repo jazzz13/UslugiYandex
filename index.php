@@ -235,9 +235,43 @@
 					</td>
 				</tr>
 				<tr>
+					<td colspan='2'>
+						$insuranceConditions
+					</td>
+				</tr>
+				<tr class='uy-full-result-tr-header'>
 					<td>
+						Обеспечение кредита
 					</td>
 					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Поручительство 
+					</td>
+					<td>
+						$guaranteeNeed
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Залог
+					</td>
+					<td>
+						$pledgeNeed
+					</td>
+				</tr>
+				<tr class='uy-full-result-tr-header'>
+					<td>
+						Дополнительно
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td colspan='2'>
+						$additionalInfo
 					</td>
 				</tr>
 			</table>

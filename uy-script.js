@@ -68,6 +68,20 @@ var otherProofIncomeDesc = {
 	"OTHER_DOCUMENTS": "другие документы"
 };
 
+var guaranteeNeedDesc = {
+	"NOT_REQUIRED" : "не требуется",
+	"OBLIGATORY" : "обязательно",
+	"OPTIONAL" : "возможно",
+	"REQUIRED_IF_COUNTERPART_IS_ABSENT" : "требуется при отсутствии залога"
+};
+
+var pledgeNeedDesc = {
+	"NOT_REQUIRED" : "не требуется",
+	"OBLIGATORY" : "обязательно",
+	"OPTIONAL" : "возможно",
+	"REQUIRED_IF_COUNTERPART_IS_ABSENT" : "требуется"
+};
+
 function start(){
 	initElements();
 	initTemplates();
@@ -377,6 +391,20 @@ function processingData(data){
 	if(!data.advancedRepaymentFee)
 		data.advancedRepaymentFee = "отсутствует";
 
+	if(data.guaranteeNeed){
+		data.guaranteeNeed = guaranteeNeedDesc[data.guaranteeNeed];
+		if(!data.guaranteeNeed){
+			data.guaranteeNeed = "";	
+		}
+	}
+
+	if(data.pledgeNeed){
+		data.pledgeNeed = pledgeNeedDesc[data.pledgeNeed];
+		if(!data.pledgeNeed){
+			data.pledgeNeed = "";	
+		}
+	}
+
 	return data;
 }
 
@@ -472,29 +500,39 @@ function makeDocumentTable(fullInfoDiv, credit){
 	var otherTr = fullInfoDiv.find("table tr:contains("+otherDocumentTitle+")");
 
 	credit.find("proof-of-income documents document").each(function(i, doc){
+
 		var doc = $(doc);
 		var key = doc.text().trim();
+
+		if(!proofIncomeDesc[key])
+			return true;
+
 		var attr = doc.attr("required");
 		var req = "обязателен";
 
 		if(attr == "DESIRABLE_ON_DEMAND")
 			req = "желательно или по требованию";
 		if(attr == "CHOOSINGLY")
-			req = "по выбору";
+			req = "желательно";
 
 		generalTr.after("<tr><td>"+proofIncomeDesc[key]+"</td><td>"+req+"</td></tr>");
 	});
 
 	credit.find("other-provided-documents documents document").each(function(i, doc){
+
 		var doc = $(doc);
 		var key = doc.text().trim();
+
+		if(!otherProofIncomeDesc[key])
+			return true;
+
 		var attr = doc.attr("required");
 		var req = "обязателен";
 
 		if(attr == "DESIRABLE_ON_DEMAND")
 			req = "желательно или по требованию";
 		if(attr == "CHOOSINGLY")
-			req = "по выбору";
+			req = "желательно";
 
 		otherTr.after("<tr><td>"+otherProofIncomeDesc[key]+"</td><td>"+req+"</td></tr>");
 	});
@@ -642,6 +680,14 @@ function parseFullXmlFromData(credit){
 		data.advancedRepayment = "";
 
 	data.advancedRepaymentFee = credit.find("advanced-repayment fee-description:eq(0)").text();
+
+	data.insuranceConditions = credit.find("insurance conditions").text();
+
+	data.guaranteeNeed = credit.find("credit-security guarantee-need").text().trim();
+
+	data.pledgeNeed = credit.find("credit-security pledge-need").text().trim();
+
+	data.additionalInfo = credit.find("additional-info additional-info").text();
 
 	return data;
 }

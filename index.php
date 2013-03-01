@@ -175,7 +175,7 @@
 					<td>
 					</td>
 				</tr>
-				<tr>
+				<tr class='uy-field-purpose'>
 					<td>
 						Цель
 					</td>
@@ -269,6 +269,79 @@
 					<td>
 					</td>
 				</tr>
+				<tr>
+					<td>
+						Максимальный возраст на момент погашения кредита для мужчин
+					</td>
+					<td>
+						$debtorMaxAgeMale
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Максимальный возраст на момент погашения для женщин
+					</td>
+					<td>
+						$debtorMaxAgeFemale
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Гражданство
+					</td>
+					<td>
+						$citizenship
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Регистрация
+					</td>
+					<td>
+						$registration
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Общий стаж работы
+					</td>
+					<td>
+						$totalWorkExperience
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Стаж работы на последнем месте
+					</td>
+					<td>
+						$lastWorkExperience
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Домашний телефон
+					</td>
+					<td>
+						$homePhone
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Мобильный телефон
+					</td>
+					<td>
+						$mobilePhone
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Рабочий телефон
+					</td>
+					<td>
+						$jobPhone
+					</td>
+				</tr>
+
 				<tr class='uy-full-result-tr-header'>
 					<td>
 						Сроки принятия решения
@@ -276,11 +349,33 @@
 					<td>
 					</td>
 				</tr>
+				<tr>
+					<td>
+						Срок рассмотрения заявки
+					</td>
+					<td>
+						$applicationPendency
+					</td>
+				</tr>
+				<tr>
+					<td colspan='2'>
+						$applicationPendencyComment
+					</td>
+				</tr>
+
 				<tr class='uy-full-result-tr-header'>
 					<td>
 						Способы оплаты
 					</td>
 					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Способы оплаты
+					</td>
+					<td>
+						$paymentMethods
 					</td>
 				</tr>
 				<tr class='uy-full-result-tr-header'>

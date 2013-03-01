@@ -82,6 +82,32 @@ var pledgeNeedDesc = {
 	"REQUIRED_IF_COUNTERPART_IS_ABSENT" : "требуется"
 };
 
+var registrationDesc = {
+	"NOT_REQUIRED" : "не требуется",
+	"INTERIM" : "временная",
+	"INTERIM_REGION" : "временная в регионе обращения",
+	"PERMANENT" : "постоянная",
+	"PERMANENT_REGION" : "постоянная в регионе обращения"
+};
+
+var applicationPendencyDesc = {
+	"SAME_DAY" : "день в день",
+	"LESS_2_DAYS" : "до 2-х дней",
+	"LESS_3_DAYS" : "до 3-х дней",
+	"LESS_WEEK" : "до недели",
+	"MORE_WEEK" : "больше недели"
+};
+
+var paymentMethodsDesc = {
+	"EPS" : "электронные платежные системы",
+	"ATM" : "банкоматы",
+	"CLEARING_BASIS_PAYMENT" : "безналичный платеж/перевод",
+	"BANK_OFFICE" : "кассы банка",
+	"RUSSIAN_POST" : "отделения ФГУП «Почта России»",
+	"ACCOUNTING_DPT" : "бухгалтерия по месту работы",
+	"PAYMENT_TERMINAL" : "платежные терминалы"
+};
+
 function start(){
 	initElements();
 	initTemplates();
@@ -332,15 +358,20 @@ function posteCredits(credits){
 
 		$.data( targetDiv.find(".uy-credit:last-child")[0], "data", data);
 	});
-	
+
+	clearTrash(targetDiv);
+
+	targetDiv.find("a").click(initRequestFullData);
+}
+
+function clearTrash(targetDiv){
+
 	if(isCommonCredit()){
 		targetDiv.find(".uy-field-firstPay").remove();
 	
 	} else {
 		targetDiv.find(".uy-field-purpose").remove();
 	}
-
-	targetDiv.find("a").click(initRequestFullData);
 }
 
 function parseDataFromXml(credit){
@@ -407,7 +438,25 @@ function processingData(data){
 		}
 	}
 
+	req("citizenship");
+	req("homePhone");
+	req("mobilePhone");
+	req("jobPhone");
+
+	if(!data.applicationPendency)
+		data.applicationPendency = " не указано ";
+
+	if(!data.additionalInfo)
+		data.additionalInfo = " не указано ";
+
+	if(!data.fullRestrictions)
+		data.fullRestrictions = " не указано ";
+
 	return data;
+
+	function req(key){
+		data[key] = (data[key] && data[key].length ? "обязательно" : "не обязательно" );
+	}
 }
 
 function monthPayByParams(sum, rate, months) {
@@ -484,6 +533,8 @@ function postFullCreditInfo( credit ){
 	makeGeneralTable(fullInfoDiv, makeMatrixWithRates(data.rates));
 
 	makeDocumentTable(fullInfoDiv, credit);
+
+	clearTrash(creditDivForFullData);
 
 	fullInfoDiv.find("a.uy-full-info-close").click(function(e){
 		e.preventDefault();
@@ -690,6 +741,39 @@ function parseFullXmlFromData(credit){
 	data.pledgeNeed = credit.find("credit-security pledge-need").text().trim();
 
 	data.additionalInfo = credit.find("additional-info additional-info").text();
+
+	data.debtorMaxAgeMale = credit.find("debtor-requirements debtor[gender=MALE] max-repayment-age").text();
+
+	data.debtorMaxAgeFemale = credit.find("debtor-requirements debtor[gender=FEMALE] max-repayment-age").text();
+
+	data.citizenship = credit.find("debtor-requirements citizenship");
+
+	data.registration = registrationDesc[credit.find("debtor-requirements registration").text().trim()];
+	if(!data.registration)
+		data.registration = "не требуется";
+
+	data.totalWorkExperience = credit.find("debtor-requirements total-work-experience").text();
+
+	data.lastWorkExperience = credit.find("debtor-requirements last-work-experience").text();
+
+	data.homePhone = credit.find("debtor-requirements home-phone");
+
+	data.mobilePhone = credit.find("debtor-requirements mobile-phone");
+
+	data.jobPhone = credit.find("debtor-requirements job-phone");
+
+	data.applicationPendency = applicationPendencyDesc[credit.find("decision-timing application-pendency").text()];
+
+	data.applicationPendencyComment = credit.find("decision-timing comment").text();
+
+	data.paymentMethods = [];
+	credit.find("payment methods method").each(function(i, method){
+		var method = $(method);
+
+		data.paymentMethods.push(paymentMethodsDesc[method.text().trim()]);
+	}); 
+	data.paymentMethods = data.paymentMethods.join(", ");
+
 
 	return data;
 }

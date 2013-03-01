@@ -264,6 +264,27 @@
 				</tr>
 				<tr class='uy-full-result-tr-header'>
 					<td>
+						Требования к заемщику
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr class='uy-full-result-tr-header'>
+					<td>
+						Сроки принятия решения
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr class='uy-full-result-tr-header'>
+					<td>
+						Способы оплаты
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr class='uy-full-result-tr-header'>
+					<td>
 						Дополнительно
 					</td>
 					<td>
@@ -272,6 +293,18 @@
 				<tr>
 					<td colspan='2'>
 						$additionalInfo
+					</td>
+				</tr>
+				<tr class='uy-full-result-tr-header'>
+					<td>
+						Ограничения
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td colspan='2'>
+						$fullRestrictions  
 					</td>
 				</tr>
 			</table>

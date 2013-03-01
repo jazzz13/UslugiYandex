@@ -384,6 +384,8 @@ function floatToPercent(f){
 
 function processingData(data){
 
+	data.fullRestrictions = data.restrictions; 
+
 	data.restrictions = (data.restrictions.trim() ? "есть" : "нет" );
 	//data.rate = data.rate + "%"
 	data.firstPay = data.firstPay + "%";

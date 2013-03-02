@@ -344,7 +344,9 @@ function posteCredits(credits){
 
 	targetDiv.empty();
 
-	var credits = sortCredits(credits);
+	var credits = deleteRepeats(credits);
+
+	credits = sortCredits(credits);
 
 	credits.each(function(i, credit){
 
@@ -790,6 +792,24 @@ function parseFullXmlFromData(credit){
 	return data;
 }
 
+function deleteRepeats(credits){
+
+	var ids = {};
+	var result = [];
+
+	credits.each(function(i, credit){
+
+		var id = $(credit).find("id:eq(0)").text().trim();	
+
+		if(!ids[id]){
+			ids[id] = true;
+			result.push(credit);
+		}
+	});
+
+	return $(result);
+}
+
 function sortCredits(credits){
 	//var id = credit.find("id:eq(0)").text().trim();
 	//var bankId = credit.find("bank id:eq(0)").text().trim();
@@ -799,6 +819,15 @@ function sortCredits(credits){
 function sortCreditsByBanks(credits){
 	var result = [];
 	var maxRange = 0;
+
+	var bankRanges = commonBankRanges;
+
+	if(isMortgage()){
+		bankRanges = mortgageBankRanges;
+
+	} else if(isAutoCredit()){
+		bankRanges = autoCreditBankRanges;
+	}
 
 	$.each(bankRanges, function(i, range){
 		if(range>maxRange)

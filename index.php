@@ -94,11 +94,16 @@
 				<div class='uy-credit-name'>  
 					<a href='$link'>  
 						$name  
-					</a>  
+					</a> 
 				</div>  
 				<div class='uy-credit-bank'>  
 					Банк: $bank  
-				</div>  
+				</div> 
+				<div>
+					<a href='$outLink' class='uy-credit-outlink' target='_blank'>
+						(перейти на сайт кредита)
+					</a>
+				</div> 
 				<table class='uy-credit-table'>  
 					<tr class='uy-credit-table-tr-first'>  
 						<td class='uy-field-purpose'>
@@ -415,6 +420,7 @@
 
 <script src='./jquery-1.9.1.min.js'></script>
 <script>var creditTypeId = <?php echo $formCreditId;?>;</script>
+<script src='./uy-out-links.js'></script>
 <script src="./uy-script.js"></script>
 
 

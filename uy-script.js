@@ -361,7 +361,7 @@ function posteCredits(credits){
 
 	clearTrash(targetDiv);
 
-	targetDiv.find("a").click(initRequestFullData);
+	targetDiv.find(".uy-credit-name a").click(initRequestFullData);
 }
 
 function clearTrash(targetDiv){
@@ -378,10 +378,10 @@ function parseDataFromXml(credit){
 
 	var data = {};
 
-	data.id = credit.find("id:eq(0)").text();
+	data.id = credit.find("id:eq(0)").text().trim();
 	data.name = credit.find("name:eq(0)").text();
 	data.bank = credit.find("bank name:eq(0)").text();
-	data.link = credit.find("link:eq(0)").attr("href");
+	data.link = credit.find("link[rel=self]:eq(0)").attr("href");
 
 	data.purpose = targetsDesc[credit.find("purpose:eq(0)").text()];
 	if(!data.purpose)
@@ -403,6 +403,8 @@ function parseDataFromXml(credit){
 
 	data.overPay = ( parseInt( currentDataRequest.period ) * data.monthPay ) - parseInt(currentDataRequest.sum);
 
+	data.outLink = credit.find("link[rel=www]:eq(0)").attr("href");
+
 	return data;
 }
 
@@ -414,6 +416,13 @@ function floatToPercent(f){
 }
 
 function processingData(data){
+
+	if(outLinks && outLinks[data.id]){
+		data.outLink = outLinks[data.id];
+	} else {
+		if(!data.outLink)
+			data.outLink = "#";
+	}
 
 	data.fullRestrictions = data.restrictions; 
 

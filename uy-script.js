@@ -344,6 +344,8 @@ function posteCredits(credits){
 
 	targetDiv.empty();
 
+	var credits = sortCredits(credits);
+
 	credits.each(function(i, credit){
 
 		var credit = $(credit);
@@ -381,6 +383,7 @@ function parseDataFromXml(credit){
 	data.id = credit.find("id:eq(0)").text().trim();
 	data.name = credit.find("name:eq(0)").text();
 	data.bank = credit.find("bank name:eq(0)").text();
+	data.idBank = credit.find("bank id:eq(0)").text().trim();
 	data.link = credit.find("link[rel=self]:eq(0)").attr("href");
 
 	data.purpose = targetsDesc[credit.find("purpose:eq(0)").text()];
@@ -785,6 +788,42 @@ function parseFullXmlFromData(credit){
 
 
 	return data;
+}
+
+function sortCredits(credits){
+	//var id = credit.find("id:eq(0)").text().trim();
+	//var bankId = credit.find("bank id:eq(0)").text().trim();
+	return sortCreditsByBanks(credits);
+}
+
+function sortCreditsByBanks(credits){
+	var result = [];
+	var maxRange = 0;
+
+	$.each(bankRanges, function(i, range){
+		if(range>maxRange)
+			maxRange = range;
+	});
+
+
+	for(var i = maxRange; i>=0; i--){
+
+		credits.each(function(j, credit){
+
+			if(i==0){
+				result.push(credit);
+			} else {
+
+				var bankId = $(credit).find("bank id:eq(0)").text().trim();
+
+				if(bankRanges[bankId] && bankRanges[bankId]==i){
+					result.push(credit);
+				}
+			}
+		});
+	}
+
+	return $(result);
 }
 
 start();

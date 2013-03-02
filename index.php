@@ -90,7 +90,7 @@
 
 	<div id='uy-templates'>
 		<div id='uy-template-result-small-info'>
-			<div class='uy-credit' credit-id='$id'>  
+			<div class='uy-credit' credit-id='$id' bank-id='$idBank'>  
 				<div class='uy-credit-name'>  
 					<a href='$link'>  
 						$name  
@@ -420,7 +420,7 @@
 
 <script src='./jquery-1.9.1.min.js'></script>
 <script>var creditTypeId = <?php echo $formCreditId;?>;</script>
-<script src='./uy-out-links.js'></script>
+<script src='./uy-options.js'></script>
 <script src="./uy-script.js"></script>
 
 

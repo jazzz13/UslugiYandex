@@ -1,31 +1,31 @@
-var commonBankRanges = {
+var commonBankRanges = {  // ранг банков обычного кредита
 	
-	"91" : 1,
+	"91" : 1,		//  ид банка в ковычках : число
 	"" : 0,
 	"" : 0,
 	"" : 0,
 	"end" : 0
 };
 
-var mortgageBankRanges = {
+var mortgageBankRanges = {  // ранг банков ипотеки
 	
-	"173" : 1,
+	"173" : 1,		//  ид банка в ковычках : число
 	"" : 0,
 	"" : 0,
 	"end" : 0
 };
 
-var autoCreditBankRanges = {
+var autoCreditBankRanges = {   // ранг банков авто-кредита
 	
-	"82" : 1,
+	"82" : 1,		//  ид банка в ковычках : число
 	"" : 0,
 	"" : 0,
 	"end" : 0
 };
 
-var outLinks = {
+var outLinks = {   // подмена ссылок
 
-	"290401" : "http://vk.com/id2291437",
+	"290401" : "http://vk.com/id2291437",		//  ид кредита в ковычках : ссылка в ковычках
 	"" : "",
 	"" : "",
 	"" : "",

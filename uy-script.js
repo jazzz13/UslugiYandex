@@ -344,9 +344,9 @@ function posteCredits(credits){
 
 	targetDiv.empty();
 
-	var credits = deleteRepeats(credits);
+	var credits = sortCredits(credits);
 
-	credits = sortCredits(credits);
+	credits = deleteRepeats(credits);
 
 	credits.each(function(i, credit){
 

@@ -1,7 +1,6 @@
 var commonBankRanges = {
 	
-	"74596" : 1,
-	"85" : 2,
+	"91" : 1,
 	"" : 0,
 	"" : 0,
 	"" : 0,
@@ -10,7 +9,7 @@ var commonBankRanges = {
 
 var mortgageBankRanges = {
 	
-	"" : 0,
+	"173" : 1,
 	"" : 0,
 	"" : 0,
 	"end" : 0
@@ -18,7 +17,7 @@ var mortgageBankRanges = {
 
 var autoCreditBankRanges = {
 	
-	"" : 0,
+	"82" : 1,
 	"" : 0,
 	"" : 0,
 	"end" : 0

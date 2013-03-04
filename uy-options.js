@@ -1,4 +1,4 @@
-var uyUrlProxy = "./uy-proxy2.php";
+var uyUrlProxy = "/podbor/uy-proxy2.php";
 
 var commonBankRanges = {  // ранг банков обычного кредита
 	

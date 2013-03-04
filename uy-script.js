@@ -193,7 +193,7 @@ function buildParams(){
 
 	function buildOfTextFailds(){
 
-		var names = ["sum", "period", "region", "min-initial-instalment"];
+		var names = ["sum", "period", "min-initial-instalment"];
 
 		$.each(names, function(i, item){
 
@@ -225,7 +225,7 @@ function buildParams(){
 
 	function buildOfSelectList(){
 
-		var names = ["bank", "purpose", "advanced-repayment", "dwelling", "period-type"];
+		var names = ["bank", "purpose", "advanced-repayment", "dwelling", "period-type", "region"];
 
 		$.each(names, function(i, item){
 

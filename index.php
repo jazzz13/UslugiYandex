@@ -1,14 +1,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel='stylesheet' type='text/css' href='./uy-style.css'>
-
-<a href='?formCreditId=0'>обычный</a>
-<a href='?formCreditId=1'>ипотека</a>
-<a href='?formCreditId=2'>авто</a>
+<link rel='stylesheet' type='text/css' href='/podbor/uy-style.css'>
 
 <?php 
 
-	include "./uy-fields-content.php";
-	
+	include ("./uy-fields-content.php");
 
 	$formStructureCollection = array(
 		array(	// набор полей для обычного кредита
@@ -52,16 +47,6 @@
 
 	$selectedFields = $formStructureCollection[$formCreditId];
 
-	function getDescriptionByFieldName($fieldName){
-		global $descriptions;
-		return $descriptions[ $fieldName ];
-	}
-
-	function getControlsByFildName($fieldName){
-		global $controllers;
-		return $controllers[ $fieldName ];
-	}
-
 ?>
 
 <div id='uslugi-yandex'>
@@ -72,9 +57,9 @@
 	foreach ($selectedFields as $fieldName) {
 		
 		echo "<tr><td>";
-		echo getDescriptionByFieldName( $fieldName );	
+		echo $descriptions[ $fieldName ];	
 		echo "</td><td>";
-		echo getControlsByFildName( $fieldName );
+		echo $controllers[ $fieldName ];
 		echo "</td></tr>";	
 	}	
 ?>
@@ -418,10 +403,10 @@
 
 </div>
 
-<script src='./jquery-1.9.1.min.js'></script>
+<script src='/podbor/jquery-1.9.1.min.js'></script>
 <script>var creditTypeId = <?php echo $formCreditId;?>;</script>
-<script src='./uy-options.js'></script>
-<script src="./uy-script.js"></script>
+<script src='/podbor/uy-options.js'></script>
+<script src='/podbor/uy-script.js'></script>
 
 
 

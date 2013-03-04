@@ -643,10 +643,10 @@ function makeMatrixWithRates(rates){
 			}
 
 			if(intervalMax == "DAY"){
-				a = parseInt(a/365) + 1;
+				b = parseInt(b/365) + 1;
 			}
 			if(intervalMax == "MONTH"){
-				a = parseInt(a/12) + 1;
+				b = parseInt(b/12) + 1;
 			}
 		}
 

@@ -613,7 +613,7 @@ function makeMatrixWithRates(rates){
 
 		$.each(keys, function(i, key){
 
-			var value = getRange(rate["min"+key], rate["max"+key], key, rate.interval); 
+			var value = getRange(rate["min"+key], rate["max"+key], key, rate.intervalMin, rate.intervalMax); 
 
 			subMass.push( value );
 		});
@@ -623,10 +623,33 @@ function makeMatrixWithRates(rates){
 
 	return mass;
 
-	function getRange(a, b, key, interval){
+	function getRange(a, b, key, intervalMin, intervalMax){
 
 		var result = "";
 		
+		if(key == "Period"){
+
+			if(intervalMin == "DAY"){
+				if(a<365)
+					a=0;
+				else
+					a = parseInt(a/365);
+			}
+			if(intervalMin == "MONTH"){
+				if(a<12)
+					a=0;
+				else
+					a = parseInt(a/12);
+			}
+
+			if(intervalMax == "DAY"){
+				a = parseInt(a/365) + 1;
+			}
+			if(intervalMax == "MONTH"){
+				a = parseInt(a/12) + 1;
+			}
+		}
+
 		if(a!=0 && b == Infinity){
 			if(key == "Period" || key == "Sum" || "Instalment"){
 				result = "от " + a;
@@ -655,7 +678,7 @@ function makeMatrixWithRates(rates){
 			result += " %";
 
 		if(key == "Period")
-			result += (interval=="MONTH" ? " мес." : " л." );
+			result += " г.";
 
 		if(a==0 && b == Infinity)
 			result = " - ";
@@ -719,6 +742,11 @@ function parseFullXmlFromData(credit){
 		if(!rateObject.maxPeriod)
 			rateObject.maxPeriod = Infinity;
 
+
+		rateObject.intervalMin =  rate.find("min-period").attr("interval") ;
+		rateObject.intervalMax =  rate.find("max-period").attr("interval") ;
+
+
 		rateObject.minInstalment = parseInt( rate.find("min-initial-instalment").text() );
 		if(!rateObject.minInstalment)
 			rateObject.minInstalment = 0;
@@ -726,10 +754,6 @@ function parseFullXmlFromData(credit){
 		rateObject.maxInstalment = parseInt( rate.find("max-initial-instalment").text() );
 		if(!rateObject.maxInstalment)
 			rateObject.maxInstalment = Infinity;
-
-		rateObject.interval =  rate.find("min-period").attr("interval") ;
-		if(!rateObject.interval)
-			rateObject.interval = rate.find("max-period").attr("interval") ;
 
 
 		data.rates.push(rateObject);

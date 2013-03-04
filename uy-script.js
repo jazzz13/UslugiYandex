@@ -1,5 +1,3 @@
-var urlProxy = "./uy-proxy2.php";
-
 var targetDiv, requestButton, fieldsWithValid;
 
 var creditDivForFullData;
@@ -303,7 +301,7 @@ function requestWithData(data){
 	currentDataRequest = data;
 	console.log("request:", data);
 
-	$.ajax(urlProxy, {
+	$.ajax(uyUrlProxy, {
 		dataType: "xml",
 		data: data,
 		error: function(object){
@@ -513,7 +511,7 @@ function requestCredit(url){
 
 	console.log(url);
 
-	$.ajax(urlProxy, {
+	$.ajax(uyUrlProxy, {
 		dataType: "xml",
 		data: {
 			creditFullInfo: url

@@ -1,3 +1,5 @@
+var uyUrlProxy = "./uy-proxy2.php";
+
 var commonBankRanges = {  // ранг банков обычного кредита
 	
 	"91" : 1,		//  ид банка в ковычках : число

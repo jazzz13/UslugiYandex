@@ -607,6 +607,11 @@ function makeMatrixWithRates(rates){
 	var keys = ["Rate", "Sum", "Period", "Instalment"];
 	var mass = [];
 
+	var rates = rates.sort(function(a,b){
+		
+        return parseFloat(a.minRate)>parseFloat(b.minRate); 
+	});
+
 	$.each(rates, function(i, rate){
 		
 		var subMass = [];

@@ -3,7 +3,7 @@
 
 <?php 
 
-	include ("./uy-fields-content.php");
+	include ("./podbor/uy-fields-content.php");
 
 	$formStructureCollection = array(
 		array(	// набор полей для обычного кредита
@@ -70,7 +70,6 @@
 	<br>
 	
 	<div id='uy-result'>
-		Результаты запроса
 	</div>
 
 	<div id='uy-templates'>

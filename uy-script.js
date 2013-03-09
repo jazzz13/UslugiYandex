@@ -1,3 +1,5 @@
+(function(){
+
 var targetDiv, requestButton, fieldsWithValid;
 
 var creditDivForFullData;
@@ -339,8 +341,16 @@ function isAutoCredit(){
 
 function posteCredits(credits){
 
-
 	targetDiv.empty();
+
+	if(credits.length==0){
+
+		targetDiv.html( uyHtmlNotResult );
+		return;
+	} else {
+		
+		targetDiv.html( uyHtmlHeadResult );
+	}
 
 	var credits = sortCredits(credits);
 
@@ -885,15 +895,4 @@ function sortCreditsByBanks(credits){
 start();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+})();

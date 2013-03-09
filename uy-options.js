@@ -34,3 +34,7 @@ var outLinks = {   // подмена ссылок
 	"" : "",
 	"end" : "end"
 };
+
+
+var uyHtmlHeadResult = "<p>Результаты запроса:</p>";
+var uyHtmlNotResult = "По заданным параметрам кредитных продуктов нет";

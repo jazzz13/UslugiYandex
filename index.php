@@ -68,9 +68,6 @@
 		<button id='uy-request-button'>Показать кредиты</button>
 	</div>
 	<br>
-	
-	<div id='uy-result'>
-	</div>
 
 	<div id='uy-templates'>
 		<div id='uy-template-result-small-info'>

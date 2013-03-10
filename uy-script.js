@@ -1,6 +1,6 @@
 (function(){
 
-var targetDiv, requestButton, fieldsWithValid;
+var targetDiv, requestButton, fieldsWithValid, mainDiv;
 
 var creditDivForFullData;
 
@@ -115,7 +115,8 @@ function start(){
 }
 
 function initElements(){
-	targetDiv = $("#uy-result");
+
+	mainDiv = $("#uslugi-yandex");
 	requestButton = $("#uy-request-button");
 	fieldsWithValid = $("input[valid]");
 }
@@ -138,11 +139,13 @@ function initRequest(){
 	if(verification()){
 		showLoading();
 		requestWithData( buildParams() );
-	}
-
-	function showLoading(){
-		targetDiv.html("..получение данных..");
 	}	
+}
+
+function showLoading(){
+	
+	targetDiv = $("<div id='uy-result'> ..получение данных.. </div>");
+	mainDiv.append(targetDiv);
 }
 
 function verification(){
